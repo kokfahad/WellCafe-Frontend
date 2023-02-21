@@ -45,25 +45,34 @@ export class SignupComponent implements OnInit {
       return false;
   }
   
-  // handleSubmit(){
-  //   this.ngxService.start();
-  //   var formData = this.signupForm.value;
-  //   var data = {
-  //     name : formData.name,
-  //     email : formData.email,
-  //     contactNumber : formData.contactNumber,
-  //     password : formData.password
-  //   }
+  handleSubmit(){
+    this.ngxService.start();
+    var formData = this.signupForm.value;
+    var data = {
+      name : formData.name,
+      email : formData.email,
+      contactNumber : formData.contactNumber,
+      password : formData.password,
+      confirmPassword : formData.confirmPassword
+    }
 
-  //   this.userService.signup(data).subscribe((res : any){
-  //      this.ngxService.stop();
-  //      this.dialogRef.close();
-  //      this.responseMessage = res?.message;
-  //      this.snackbarService.openSncakBar(this.responseMessage, "");
-  //      this.router.navigate(['/'])
-  //   }
+    this.userService.signup(data).subscribe((res : any) => {
+       this.ngxService.stop();
+       this.dialogRef.close();
+       this.responseMessage = res?.message;
+       this.snackbarService.openSncakBar(this.responseMessage, "");
+       this.router.navigate(['/'])
+    },(error) => {
+      this.ngxService.stop();
+      if(error.error?.message){
+        this.responseMessage = error.error?.message;
+      }else{
+        this.responseMessage = GlobalConstants.genericError;
+      }
+      this.snackbarService.openSncakBar(this.responseMessage, GlobalConstants.error);
+    })
 
-  //   }
+    }
     
   
    
