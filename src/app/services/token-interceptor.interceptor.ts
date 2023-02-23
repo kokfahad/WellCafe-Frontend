@@ -28,7 +28,7 @@ export class TokenInterceptorInterceptor implements HttpInterceptor {
             console.log(err.url);
             if(err.status === 401 || err.status === 403){
               if(this.router.url === '/'){}else{
-                // localStorage.clear();
+                localStorage.clear();
                 this.router.navigate(['/']);
               }
             }

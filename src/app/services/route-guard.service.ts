@@ -27,7 +27,7 @@ export class RouteGuardService {
         tokenPaylaod = jwt_decode(token)
       }
       catch(err){
-        // localStorage.clear();
+        localStorage.clear();
         this.router.navigate(['/']);
       }
 
@@ -49,7 +49,7 @@ export class RouteGuardService {
       }
       else{
         this.router.navigate(['/']);
-        // localStorage.clear();
+        localStorage.clear();
         return false;
       }
     }
