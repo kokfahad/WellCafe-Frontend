@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { RouteGuardService } from '../services/route-guard.service';
+import { ManageOrderComponent } from './manage-order/manage-order.component';
 import { ManageProductComponent } from './manage-product/manage-product.component';
 
 
@@ -11,6 +12,15 @@ export const MaterialRoutes: Routes = [
         canActivate: [RouteGuardService],
         data:{
             expectedRole: ['admin']
+        }
+
+    },
+    {
+        path: 'order',
+        component: ManageOrderComponent,
+        canActivate: [RouteGuardService],
+        data:{
+            expectedRole: ['admin','user']
         }
 
     }
