@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { saveAs } from 'file-saver';
 import { globalAgent } from 'http';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BillService } from 'src/app/services/bill.service';
@@ -45,6 +46,7 @@ export class ManageOrderComponent implements OnInit {
       product: [null, [Validators.required]],
       category: [null, [Validators.required]],
       price: [null, [Validators.required]],
+      quantity: [null, [Validators.required]],
       total: [0, [Validators.required]]
     })
   }
@@ -67,6 +69,7 @@ export class ManageOrderComponent implements OnInit {
 
   getProductsByCategory(value: any) {
     this.productService.getProductsByCategory(value.id).subscribe((res: any) => {
+      debugger
       this.products = res;
       this.manageOrderForm.controls['price'].setValue('');
       this.manageOrderForm.controls['quantity'].setValue('');
@@ -107,7 +110,7 @@ export class ManageOrderComponent implements OnInit {
       this.manageOrderForm.controls['total'].setValue(this.manageOrderForm.controls['quantity'].value *
         this.manageOrderForm.controls['price'].value);
     } else if (temp != '') {
-      this.manageOrderForm.controls['quantity'].setValue(1);
+      this.manageOrderForm.controls['quantity'].setValue('1');
       this.manageOrderForm.controls['total'].setValue(this.manageOrderForm.controls['quantity'].value *
         this.manageOrderForm.controls['price'].value)
     }
@@ -134,6 +137,62 @@ export class ManageOrderComponent implements OnInit {
 
   add(){
     var formData = this.manageOrderForm.value;
+    var productName = this.dataSource.find((e: {id: number})=> e.id === formData.product.id);
+    if(productName === undefined){
+      this.totalAmount = this.totalAmount + formData.total;
+      this.dataSource.push({id: formData.product.id, name: formData.product.name, category: formData.category.name,
+      quantity: formData.quantity, price: formData.price, total: formData.total});
+      this.dataSource = [...this.dataSource];
+      this.snackbarService.openSncakBar(GlobalConstants.productAdded, "success");
+    }else{
+      this.snackbarService.openSncakBar(GlobalConstants.productExistError, GlobalConstants.error);
+    }
   }
+
+  handleDeleteAction(value: any, element: any){
+     this.totalAmount = this.totalAmount - element.total;
+     this.dataSource.splice(value, 1);
+     this.dataSource = [...this.dataSource];
+  }
+  
+  submitAction(){
+    var formData = this.manageOrderForm.value;
+    var data = {
+      name: formData.name,
+      email: formData.email,
+      contactNumber: formData.contactNumber,
+      paymentMethod: formData.paymentMethod,
+      totalAmount: this.totalAmount.toString(),
+      productDetails: JSON.stringify(this.dataSource)
+    }
+    this.ngxService.start();
+    this.billService.generateReport(data).subscribe((res:any)=>{
+      this.downloadFile(res?.uuid);
+      this.manageOrderForm.reset();
+      this.dataSource = [];
+      this.totalAmount = 0;
+    }, (error: any) => {
+      this.ngxService.stop();
+      console.log(error);
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      } else {
+        this.responseMessage = GlobalConstants.genericError;
+      }
+      this.snackbarService.openSncakBar(this.responseMessage, GlobalConstants.error);
+    })
+  }
+
+  downloadFile(fileName: string){
+     var data = {
+      uuid: fileName
+     }
+     this.billService.getPdf(data).subscribe((res:any)=>{
+      saveAs(res, fileName + '.pdf');
+      this.ngxService.stop();
+     })
+  }
+
+
 
 }
