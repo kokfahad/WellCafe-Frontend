@@ -22,7 +22,13 @@ export class BillService {
   }
 
   getBills(){
-    return this.httpClient.get(this.url + "/bill/getBills");
+    return this.httpClient.get(this.url + "/bill/get-bills");
+  }
+  
+  delete(id: any){
+    return this.httpClient.post(this.url + "/bill/delete/"+ id, {
+      headers: new HttpHeaders().set('Content-Type', "application/json")
+    })
   }
 
 }
