@@ -1,0 +1,25 @@
+.float-right{
+    float: right;
+}
+
+mat-card{
+    padding: 20px;
+}
+
+table{
+    width: 100%;
+}
+
+::ng-deep .highlight{
+    color: white;
+    background: #6738B7;
+}
+
+#header-bg{
+    background-color: #E27D60; 
+    color: white;
+}
+
+#edit-icon{
+    color: #E27D60; 
+}

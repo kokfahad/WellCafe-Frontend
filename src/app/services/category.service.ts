@@ -3,33 +3,35 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+   providedIn: 'root'
 })
 export class CategoryService {
-  url = environment.apiUrl;
+   url = environment.apiUrl;
 
-  constructor(private httpClient : HttpClient) { }
+   constructor(private httpClient: HttpClient) { }
 
-  add(data: any){
-     return this.httpClient.post(this.url + "/category/add", data, {
-      headers: new HttpHeaders().set('Content-type', "application/json")
-     })
-  }
+   add(data: any) {
+      return this.httpClient.post(this.url + "/category/add", data, {
+         headers: new HttpHeaders().set('Content-type', "application/json")
+      })
+   }
 
-  
-  update(data: any){
-    return this.httpClient.post(this.url + "/category/update", data, {
-     headers: new HttpHeaders().set('Content-type', "application/json")
-    })
- }
 
- getCategory(){
-     return this.httpClient.get(this.url + "/category/get")
- }
+   update(data: any) {
+      return this.httpClient.post(this.url + "/category/update", data, {
+         headers: new HttpHeaders().set('Content-type', "application/json")
+      })
+   }
 
- getFilteredCategorys(){
-    return this.httpClient.get(this.url + "/category/get?filterValue=true")
- }
+   getCategory() {
+      return this.httpClient.get(this.url + "/category/get")
+   }
+
+   getFilteredCategorys() {
+      return this.httpClient.get(this.url + "/category/get?filterValue=true")
+   }
+
+
 
 
 
