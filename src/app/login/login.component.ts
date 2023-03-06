@@ -41,11 +41,11 @@ export class LoginComponent implements OnInit {
     this.userService.login(data).subscribe((res: any) => {
       this.ngxService.stop();
       this.dialogRef.close();
-      debugger
       let jwt_token = res.token
       localStorage.setItem("token", jwt_token);
       this.router.navigate(['/cafe/dashboard'])
     }, (error) => {
+      this.ngxService.stop();
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
       } else {

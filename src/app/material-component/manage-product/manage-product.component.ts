@@ -16,7 +16,7 @@ import { ProductComponent } from '../dialog/product/product.component';
   styleUrls: ['./manage-product.component.scss']
 })
 export class ManageProductComponent implements OnInit {
-  displayedColumns: string[] =['name', 'categoryName', 'description', 'price', 'edit' ];
+  displayedColumns: string[] =['name', 'description', 'price', 'edit' ];
   dataSource: any;
   length: any;
   responseMessage: any;
@@ -35,7 +35,6 @@ export class ManageProductComponent implements OnInit {
   tableData(){
     this.productService.getProducts().subscribe((res:any)=>{
       this.ngxService.stop();
-      debugger
       this.dataSource = new MatTableDataSource(res);
     },(error:any)=>{
       this.ngxService.stop();
