@@ -35,7 +35,8 @@ export class ManageProductComponent implements OnInit {
   tableData(){
     this.productService.getProducts().subscribe((res:any)=>{
       this.ngxService.stop();
-      this.dataSource = new MatTableDataSource(res);
+      debugger
+      this.dataSource = new MatTableDataSource(res.replyMessage);
     },(error:any)=>{
       this.ngxService.stop();
       console.log(error.error?.message);
@@ -103,7 +104,7 @@ export class ManageProductComponent implements OnInit {
      this.productService.delete(id).subscribe((res:any)=>{
       this.ngxService.stop();
       this.tableData();
-      this.responseMessage = res?.message;
+      this.responseMessage = res?.replyMessage;
       this.snackbarService.openSncakBar(this.responseMessage,"success");
      },(error:any)=>{
       this.ngxService.stop();
@@ -125,7 +126,7 @@ export class ManageProductComponent implements OnInit {
     }
     this.productService.updateStatus(data).subscribe((res: any)=>{
       this.ngxService.stop();
-      this.responseMessage =  res?.message;
+      this.responseMessage =  res?.replyMessage;
       this.snackbarService.openSncakBar(this.responseMessage, "success");
     },(error:any)=>{
       this.ngxService.stop();

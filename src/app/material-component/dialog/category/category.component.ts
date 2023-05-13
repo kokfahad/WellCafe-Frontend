@@ -51,9 +51,10 @@ export class CategoryComponent implements OnInit {
       name: formData.name
     }
     this.categoryService.add(data).subscribe((res:any)=>{
+      debugger
       this.dialogRef.close();
       this.onAddCategory.emit();
-      this.responseMessage = res.message;
+      this.responseMessage = res.replyMessage;
       this.snackbarService.openSncakBar(this.responseMessage, "success");
     }, (error)=>{
       this.dialogRef.close();
@@ -76,7 +77,7 @@ export class CategoryComponent implements OnInit {
     this.categoryService.update(data).subscribe((res:any)=>{
       this.dialogRef.close();
       this.onAddCategory.emit();
-      this.responseMessage = res.message;
+      this.responseMessage = res.replyMessage;
       this.snackbarService.openSncakBar(this.responseMessage, "success");
     }, (error)=>{
       this.dialogRef.close();

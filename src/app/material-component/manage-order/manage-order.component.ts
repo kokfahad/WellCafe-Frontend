@@ -54,10 +54,9 @@ export class ManageOrderComponent implements OnInit {
   getCategories() {
     this.categoryService.getFilteredCategorys().subscribe((res: any) => {
       this.ngxService.stop();
-      this.categories = res;
+      this.categories = res.replyMessage;
     }, (error: any) => {
       this.ngxService.stop();
-      console.log(error);
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
       } else {
@@ -70,7 +69,7 @@ export class ManageOrderComponent implements OnInit {
   getProductsByCategory(value: any) {
     this.productService.getProductsByCategory(value.id).subscribe((res: any) => {
       debugger
-      this.products = res;
+      this.products = res.replyMessage;
       this.manageOrderForm.controls['price'].setValue('');
       this.manageOrderForm.controls['quantity'].setValue('');
       this.manageOrderForm.controls['total'].setValue(0);
@@ -88,8 +87,9 @@ export class ManageOrderComponent implements OnInit {
 
   getProductDetails(value: any) {
     this.productService.getById(value.id).subscribe((res: any) => {
-      this.price = res.price;
-      this.manageOrderForm.controls['price'].setValue(res.price);
+      debugger
+      this.price = res.replyMessage.price;
+      this.manageOrderForm.controls['price'].setValue(res.replyMessage.price);
       this.manageOrderForm.controls['quantity'].setValue('1');
       this.manageOrderForm.controls['total'].setValue(this.price * 1);
     }, (error: any) => {
@@ -147,6 +147,9 @@ export class ManageOrderComponent implements OnInit {
     }else{
       this.snackbarService.openSncakBar(GlobalConstants.productExistError, GlobalConstants.error);
     }
+    debugger
+
+    this.manageOrderForm.reset();
   }
 
   handleDeleteAction(value: any, element: any){
@@ -167,6 +170,7 @@ export class ManageOrderComponent implements OnInit {
     }
     this.ngxService.start();
     this.billService.generateReport(data).subscribe((res:any)=>{
+      debugger
       this.downloadFile(res?.uuid);
       this.manageOrderForm.reset();
       this.dataSource = [];
@@ -184,15 +188,14 @@ export class ManageOrderComponent implements OnInit {
   }
 
   downloadFile(fileName: string){
+    debugger
      var data = {
       uuid: fileName
      }
      this.billService.getPdf(data).subscribe((res:any)=>{
+      debugger
       saveAs(res, fileName + '.pdf');
       this.ngxService.stop();
      })
   }
-
-
-
 }

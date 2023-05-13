@@ -47,7 +47,7 @@ export class ProductComponent implements OnInit {
   getCategorys() {
     this.categoryService.getCategory().subscribe((res: any) => {
       debugger
-      this.categories = res;
+      this.categories = res.replyMessage;
     }, (error: any) => {
       console.log(error)
       if (error.error?.message) {
@@ -79,7 +79,7 @@ export class ProductComponent implements OnInit {
     this.productService.add(data).subscribe((res: any) => {
       this.dialogRef.close();
       this.onAddProduct.emit();
-      this.responseMessage = res.message;
+      this.responseMessage = res.replyMessage;
       this.snackbarService.openSncakBar(this.responseMessage, "success");
     }, (error) => {
       console.log(error)
@@ -96,6 +96,7 @@ export class ProductComponent implements OnInit {
 
   edit() {
     var formData = this.productForm.value;
+    debugger
     var data = {
       id:this.dialogData.data.id, 
       name: formData.name,
@@ -105,9 +106,10 @@ export class ProductComponent implements OnInit {
     }
 
     this.productService.update(data).subscribe((res: any) => {
+      debugger
       this.dialogRef.close();
       this.onAddProduct.emit();
-      this.responseMessage = res.message;
+      this.responseMessage = res.replyMessage;
       this.snackbarService.openSncakBar(this.responseMessage, "success");
     }, (error) => {
       console.log(error)

@@ -35,8 +35,9 @@ export class ViewBillComponent implements OnInit {
   
   tableData(){
     this.billService.getBills().subscribe((res : any)=>{
+      debugger
       this.ngxService.stop();
-      this.dataSource = new MatTableDataSource(res);
+      this.dataSource = new MatTableDataSource(res.replyMessage);
     },(error:any)=>{
       this.ngxService.stop();
       console.log(error);
@@ -75,6 +76,7 @@ export class ViewBillComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((res)=>{
+      debugger
       this.ngxService.start();
       this.deleteBill(values.id);
       dialogRef.close();
@@ -83,9 +85,10 @@ export class ViewBillComponent implements OnInit {
 
   deleteBill(id: any){
      this.billService.delete(id).subscribe((res: any)=>{
+      debugger
         this.ngxService.stop();
         this.tableData();
-        this.responseMessage = res?.message;
+        this.responseMessage = res?.replyMessage;
         this.snackbarService.openSncakBar(this.responseMessage, "success");
      },(error:any)=>{
       this.ngxService.stop();
@@ -100,6 +103,7 @@ export class ViewBillComponent implements OnInit {
   }
 
   downloadReportAction(values: any){
+    debugger
      this.ngxService.start();
      var data ={
       name: values.name,
@@ -110,12 +114,14 @@ export class ViewBillComponent implements OnInit {
       totalAmount: values.total.toString(),
       productDetails: values.productDetails
      }
-
+     debugger
      this.downloadFile(values.uuid, data);
 }
 
    downloadFile(fileName: string, data: any){
+    debugger
     this.billService.getPdf(data).subscribe((res:any)=>{
+      debugger
       saveAs(res,fileName + '.pdf');
       this.ngxService.stop();
     })

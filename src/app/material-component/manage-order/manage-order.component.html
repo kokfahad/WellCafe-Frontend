@@ -156,7 +156,7 @@
      <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef>Delete</th>
         <td mat-cell *matCellDef="let element; let i= index" class="action-link">
-            <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleDeleteAction(i, element)">
+            <button id="orange" mat-icon-button matTooltip="Edit" (click)="handleDeleteAction(i, element)">
                 <mat-icon>delete</mat-icon>
             </button>
         </td>

@@ -15,6 +15,7 @@ export class ViewBillProductsComponent implements OnInit {
               public dialogRef: MatDialogRef<ViewBillProductsComponent>) { }
 
   ngOnInit() {
+    debugger
     this.data = this.dialogData.data;
     this.dataSource = JSON.parse(this.dialogData.data.productDetails);
     // console.log(this.dialogData.data);
